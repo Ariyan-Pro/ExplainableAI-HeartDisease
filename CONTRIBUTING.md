@@ -1,69 +1,34 @@
-﻿# 🫀 Contributing to Medical AI Transparency
+﻿# 🫀 Contributing to Medical AI Excellence
 
-Thank you for contributing to ethical, explainable medical AI! We welcome contributions from clinicians, data scientists, and AI researchers committed to healthcare transparency.
+## 🎯 Our Mission
+Building medical AI that clinicians can trust and patients can understand.
 
-## 🎯 Contribution Priorities
+## 🔬 Contribution Areas
+- Clinical Validation & Testing
+- Explainability Methods
+- Performance Optimization
+- Security & Privacy
 
-### High Impact Areas
-- **Clinical Validation** - Additional medical datasets & validation studies
-- **Explainability** - New interpretability methods & visualization improvements
-- **Performance** - Model optimization & inference speed enhancements
-- **Security** - Privacy-preserving techniques & data protection
-
-### Research & Development
-- **Multi-modal Integration** - ECG, imaging, and clinical data fusion
-- **Federated Learning** - Enhanced privacy-preserving distributed training
-- **Regulatory Compliance** - HIPAA, GDPR, and medical device standards
-- **Clinical Workflows** - Integration with hospital systems and EHRs
-
-## 🔬 Development Standards
-
-### Code Quality
+## 🚀 Development Standards
 - Follow PEP 8 with medical-grade documentation
-- Include type hints for all function signatures
-- Write comprehensive docstrings with clinical context
-- Add unit tests for medical validation scenarios
-
-### Clinical Considerations
+- Include type hints and comprehensive docstrings
+- Add unit tests for clinical validation
 - Maintain patient privacy and data security
-- Ensure model interpretability for clinical trust
-- Document limitations and clinical validation results
-- Follow medical AI ethics guidelines
 
-## 🚀 Quick Start for Contributors
-\\\ash
-# 1. Fork & clone
-git clone https://github.com/your-username/ExplainableAI-HeartDisease
-cd ExplainableAI-HeartDisease
+## 📋 Pull Request Process
+1. Fork repository and create feature branch
+2. Install dependencies and run tests
+3. Submit PR with clear clinical impact description
+4. Undergo technical and clinical review
 
-# 2. Create feature branch
-git checkout -b feature/clinical-improvement
+## 🏥 Clinical Safety
+- All changes must maintain explainability
+- Patient safety is the highest priority
+- Algorithmic fairness must be validated
 
-# 3. Install & test
-pip install -r requirements.txt
-python -m pytest healthcare_model/tests/
+## ❓ Getting Help
+- Open issues for technical questions
+- Use discussions for clinical considerations
+- Contact maintainers for guidance
 
-# 4. Submit PR with clinical context
-\\\
-
-## 📋 Pull Request Requirements
-- Clear description of clinical impact
-- Performance validation results
-- Explainability analysis for model changes
-- Documentation updates
-- Test coverage for new functionality
-
-## 🏥 Clinical Review
-All contributions with clinical implications undergo review by:
-1. Technical validation (code quality, performance)
-2. Clinical relevance (medical impact, safety)
-3. Explainability assessment (model transparency)
-
-## ❓ Questions?
-- Open an issue for technical discussions
-- Start a discussion for clinical considerations
-- Contact maintainers for sensitive medical questions
-
----
-
-**Together, we're building transparent AI that clinicians can trust and patients can understand.** 🫀
+**Together, we're building trust in medical AI.** 🫀
