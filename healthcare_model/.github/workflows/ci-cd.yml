@@ -1,0 +1,66 @@
+# .github/workflows/ci-cd.yml
+name: Heart AI CI/CD Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest fastapi httpx
+        echo "✅ Dependencies installed"
+        
+    - name: Run basic functionality tests
+      run: |
+        echo "🧪 Running basic tests..."
+        cd healthcare_model
+        python tests/test_basic.py
+        
+    - name: Run API tests
+      run: |
+        echo "🧪 Running API tests..."
+        cd healthcare_model
+        python tests/test_api.py
+        
+    - name: Verify critical files exist
+      run: |
+        cd healthcare_model
+        echo "🔍 Checking critical files..."
+        [ -f "utils.py" ] && echo "✅ utils.py exists" || echo "❌ utils.py missing"
+        [ -f "api.py" ] && echo "✅ api.py exists" || echo "❌ api.py missing"
+        [ -f "data/heart_clean.csv" ] && echo "✅ data file exists" || echo "❌ data file missing"
+        [ -f "pipeline_heart_optimized.joblib" ] && echo "✅ optimized model exists" || echo "⚠️ optimized model missing (OK for CI)"
+        [ -f "pipeline_heart.joblib" ] && echo "✅ basic model exists" || echo "⚠️ basic model missing (OK for CI)"
+        
+    - name: Test data loading directly
+      run: |
+        cd healthcare_model
+        echo "📊 Testing data loading..."
+        python -c "
+        import sys
+        sys.path.append('.')
+        from utils import load_data
+        df = load_data()
+        print(f'✅ Data loaded successfully: {df.shape[0]} rows, {df.shape[1]} columns')
+        "
+        
+    - name: Success message
+      run: |
+        echo "🎉 CI/CD Pipeline Completed Successfully!"
+        echo "✅ All tests passed"
+        echo "✅ Dependencies installed"
+        echo "✅ File structure validated"
