@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/dell/Projects/ExplainableAI-Project/healthcare_model/mlruns/803299826899525466/0fe63ef6a52c49749d6f84625654690c/artifacts
+end_time: 1761571694468
+entry_point_name: ''
+experiment_id: '803299826899525466'
+lifecycle_stage: active
+run_id: 0fe63ef6a52c49749d6f84625654690c
+run_name: Optimized_XGBoost
+run_uuid: 0fe63ef6a52c49749d6f84625654690c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761571650314
+status: 3
+tags: []
+user_id: dell

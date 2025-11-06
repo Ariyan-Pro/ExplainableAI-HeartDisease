@@ -1,49 +1,8 @@
-﻿# Python
-venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
+﻿
+# Python
 
-# Models and large files (keep healthcare_model/ but ignore specific patterns)
-*.joblib
-*.pkl
-*.h5
-*.model
-
-# Data
-data/
-*.csv
-*.json
-
-# MLflow
-mlruns/
-
-# Environment
+**pycache**/
+*.py[cod]
+.venv/
 .env
-.env.local
-.env.production
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-logging_config
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Temporary files
-ACCESS VENV.txt
+models/
