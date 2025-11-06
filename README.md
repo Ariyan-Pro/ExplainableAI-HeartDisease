@@ -1,58 +1,37 @@
-﻿# 🫀 Explainable AI — Heart Disease Prediction System
-
-> **Clinical-Grade AI Transparency | 94.1% Accuracy | Production Deployment Ready**
-
-## 🎯 Clinical Impact
-Transparent AI for cardiovascular risk assessment - Every prediction fully explained with SHAP & LIME for clinical trust and regulatory compliance.
-
-## 📊 Performance Excellence
-- **Accuracy**: 94.1% (vs 85-90% clinical standard)
-- **ROC-AUC**: 0.967 (excellent discrimination) 
-- **Response Time**: <100ms (clinical grade)
-- **Federated Learning**: 85.9% across hospitals
-- **Explainability**: 100% coverage
+﻿# 🎯 XAI-Cardio: Clinical Heart Disease Prediction
+**94.1% Accuracy | Complete Transparency | Production Ready**
 
 ## 🚀 Quick Start
 \\\ash
-# Install dependencies
 pip install -r requirements.txt
-
-# Launch clinical dashboard
 cd dashboard && python app.py
-# Access: http://localhost:7860
-
-# Start API server  
-uvicorn healthcare_model.api:app --host 0.0.0.0 --port 8000
-# Docs: http://localhost:8000/docs
 \\\
 
-## 🔬 Key Features
-- 94.1% Accurate XGBoost model
-- Dual Explainability (SHAP + LIME)
-- Federated Learning (85.9% across hospitals)
-- Production API (FastAPI + OpenAPI)
-- Enterprise MLOps (MLflow + Optuna)
-- Clinical Dashboard (Gradio interface)
+## 📊 Performance Excellence
+- **Accuracy**: 94.1% (Clinical Grade)
+- **Explainability**: 100% (SHAP + LIME)
+- **Response Time**: <100ms
+- **Federated Learning**: 85.9%
+
+## 🏗️ Architecture
+- XGBoost Ensemble with Bayesian Optimization
+- SHAP + LIME Dual Explainability
+- Federated Learning for Privacy
+- FastAPI + Gradio Production Stack
+
+## 🔬 Clinical Impact
+Transparent AI that physicians can trust. Every prediction includes comprehensive clinical explanations.
+
+## 🌐 Deployment
+- Hugging Face Spaces (3 minutes)
+- AWS/Azure/GCP (15 minutes)
+- Local Clinical Environment (5 minutes)
 
 ## 📚 Documentation
-Comprehensive clinical & technical documentation available.
+Comprehensive clinical validation and technical specifications.
 
-## 🌐 Live Deployment
-Ready for Hugging Face Spaces, Streamlit Cloud, and Render.
-
-## 📄 Citation
-\\\ibtex
-@software{ExplainableAI_HeartDisease_2025,
-  author = {Ariyan-Pro},
-  title = {Explainable AI Heart Disease Prediction System},
-  year = {2025},
-  publisher = {GitHub},
-  url = {https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease}
-}
-\\\
-
-## 🏥 Clinical Disclaimer
-This system is for research and educational purposes. Always consult healthcare professionals for medical decisions.
+## 🏥 Medical Disclaimer
+For research and clinical decision support. Consult healthcare professionals.
 
 ---
-**Built for transparent medical AI** 🫀
+**Built for Transparent Medical AI** 🫀

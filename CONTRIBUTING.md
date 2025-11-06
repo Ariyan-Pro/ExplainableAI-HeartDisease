@@ -1,34 +1,32 @@
-﻿# 🫀 Contributing to Medical AI Excellence
+﻿# 🎯 Contributing to Medical AI Excellence
 
-## 🎯 Our Mission
-Building medical AI that clinicians can trust and patients can understand.
+## 🚀 Quick Start
+1. Fork repository
+2. Create feature branch
+3. Install dependencies
+4. Submit pull request
 
 ## 🔬 Contribution Areas
-- Clinical Validation & Testing
+- Clinical Validation
 - Explainability Methods
 - Performance Optimization
 - Security & Privacy
 
-## 🚀 Development Standards
-- Follow PEP 8 with medical-grade documentation
-- Include type hints and comprehensive docstrings
-- Add unit tests for clinical validation
-- Maintain patient privacy and data security
+## 🏥 Clinical Standards
+- Maintain 100% explainability
+- Ensure patient safety
+- Validate algorithmic fairness
+- Follow medical ethics
 
-## 📋 Pull Request Process
-1. Fork repository and create feature branch
-2. Install dependencies and run tests
-3. Submit PR with clear clinical impact description
-4. Undergo technical and clinical review
+## 📋 Development
+- PEP 8 standards with medical documentation
+- Type hints and comprehensive docstrings
+- Unit tests for clinical validation
+- Privacy and security first
 
-## 🏥 Clinical Safety
-- All changes must maintain explainability
-- Patient safety is the highest priority
-- Algorithmic fairness must be validated
-
-## ❓ Getting Help
+## ❓ Support
 - Open issues for technical questions
-- Use discussions for clinical considerations
+- Discussions for clinical topics
 - Contact maintainers for guidance
 
-**Together, we're building trust in medical AI.** 🫀
+**Building Trust in Medical AI** 🫀
