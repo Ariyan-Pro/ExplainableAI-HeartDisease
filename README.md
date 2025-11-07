@@ -1,7 +1,3 @@
-cd "C:\Users\dell\Projects\ExplainableAI-HeartDisease"
-
-# Create a professional README.md using all your assets
-@"
 # 🏥 ExplainableAI Heart Disease Predictor
 
 <div align="center">
