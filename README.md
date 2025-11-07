@@ -69,4 +69,4 @@ git clone https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease.git
 cd ExplainableAI-HeartDisease
 pip install -r requirements.txt
 python dashboard/app.py
-<div align="center"> Built with ❤️ for Clinical AI Transparency </div> ```
+Built with ❤️ for Clinical AI Transparency
