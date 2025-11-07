@@ -64,20 +64,9 @@
 
 ## 🛠️ Quick Start
 
-\`\`\`bash
-# Clone and run locally
+```bash
 git clone https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease.git
 cd ExplainableAI-HeartDisease
 pip install -r requirements.txt
 python dashboard/app.py
-\`\`\`
-
----
-
-<div align="center">
-
-**Built with ❤️ for Clinical AI Transparency**
-
-[![GitHub Stars](https://img.shields.io/github/stars/Ariyan-Pro/ExplainableAI-HeartDisease?style=social)](https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease/stargazers)
-[![Hugging Face](https://img.shields.io/badge/🤗_Hugging_Face-Spaces-yellow)](https://huggingface.co/spaces/Ariyan-Pro/HeartDisease-Predictor)
-
+<div align="center"> Built with ❤️ for Clinical AI Transparency </div> ```
