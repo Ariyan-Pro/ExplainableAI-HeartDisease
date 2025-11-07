@@ -235,6 +235,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [![GitHub Stars](https://img.shields.io/github/stars/Ariyan-Pro/ExplainableAI-HeartDisease?style=social)](https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease/stargazers)
 [![Hugging Face](https://img.shields.io/badge/🤗_Hugging_Face-Spaces-yellow)](https://huggingface.co/spaces/Ariyan-Pro/HeartDisease-Predictor)
 
-[![GitHub Issues](https://img.shields.io/github/issues/Ariyan-Pro/ExplainableAI-HeartDisease)](https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease/issues)
-[![GitHub Forks](https://img.shields.io/github/forks/Ariyan-Pro/ExplainableAI-HeartDisease)](https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease/network/members)
-[![GitHub Stars](https://img.shields.io/github/stars/Ariyan-Pro/ExplainableAI-HeartDisease)](https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease/stargazers)
