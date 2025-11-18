@@ -49,7 +49,7 @@
 <div align="center">
 
 **Enterprise-Grade Architecture**
-![Four Layer Architecture](./assets/architecture/four_layer_architecture.png)
+![Four Layer Architecture](./assets/architecture/error_handling_workflow.png)
 
 </div>
 
