@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExplainableAI Heart Disease Predictor | Clinical-Grade AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #111111;
+            --bg-card: rgba(20, 20, 20, 0.6);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+            --accent-glow: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-gradient {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+            opacity: 0.5;
+        }
+
+        .bg-gradient:nth-child(1) {
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .bg-gradient:nth-child(2) {
+            bottom: -200px;
+            right: -200px;
+            animation-delay: -7s;
+        }
+
+        .bg-gradient:nth-child(3) {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(50px, -50px) scale(1.1);
+            }
+            50% {
+                transform: translate(-30px, 30px) scale(0.9);
+            }
+            75% {
+                transform: translate(40px, 20px) scale(1.05);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.75rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--text-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+            opacity: 0;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .hero-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.25rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.8s forwards;
+            opacity: 0;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-hover);
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Bento Grid Section */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(auto-fit, minmax(280px, auto));
+            gap: 1.5rem;
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--border-hover);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        .bento-card-large {
+            grid-column: span 2;
+        }
+
+        .bento-card-tall {
+            grid-row: span 2;
+        }
+
+        .bento-card-full {
+            grid-column: span 4;
+        }
+
+        .bento-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .bento-card:hover .bento-icon {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            transform: scale(1.1);
+        }
+
+        .bento-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .bento-description {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .bento-metric {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .bento-metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .bento-metric-label {
+            font-size: 0.8125rem;
+            color: var(--text-tertiary);
+        }
+
+        .bento-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .bento-card:hover .bento-image {
+            opacity: 1;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-tag {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.375rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .metric-sublabel {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-top: 0.25rem;
+        }
+
+        /* Architecture Section */
+        .architecture-diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-top: 3rem;
+        }
+
+        .architecture-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .architecture-layer {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .architecture-layer:hover {
+            background: var(--border-hover);
+            transform: translateX(10px);
+        }
+
+        .layer-number {
+            width: 40px;
+            height: 40px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            flex-shrink: 0;
+        }
+
+        .layer-content {
+            flex: 1;
+        }
+
+        .layer-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .layer-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Code Section */
+        .code-block {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            font-size: 0.875rem;
+            line-height: 1.8;
+        }
+
+        .code-keyword { color: #c678dd; }
+        .code-string { color: #98c379; }
+        .code-function { color: #61afef; }
+        .code-comment { color: #5c6370; }
+        .code-number { color: #d19a66; }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 4rem;
+            text-align: center;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 2rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            margin-top: 1rem;
+            line-height: 1.7;
+        }
+
+        .footer-heading {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            transform: translateY(-3px);
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+
+        /* Mouse Parallax Effect */
+        .parallax-element {
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bento-card-large,
+            .bento-card-full {
+                grid-column: span 2;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bento-card-large,
+            .bento-card-tall,
+            .bento-card-full {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .architecture-layers {
+                gap: 0.5rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--text-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Initializing</div>
+        </div>
+    </div>
+
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="bg-gradient"></div>
+        <div class="bg-gradient"></div>
+        <div class="bg-gradient"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">🫀</div>
+                <span>ExplainableAI</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#performance">Performance</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#explainability">Explainability</a></li>
+                <li><a href="#deployment">Deployment</a></li>
+                <li><a href="#docs">Documentation</a></li>
+            </ul>
+            <a href="https://huggingface.co/spaces/Ariyan-Pro/HeartDisease-Predictor" class="nav-cta" target="_blank">Try Live Demo</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <div class="hero-badge-dot"></div>
+                <span>Clinical-Grade AI System</span>
+            </div>
+            <h1 class="hero-title">
+                <span>ExplainableAI Heart Disease Predictor</span>
+            </h1>
+            <p class="hero-subtitle">
+                A clinical-grade AI system that predicts heart disease risk with 94.1% accuracy — 
+                and explains every decision in plain clinical language.
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">94.1%</div>
+                    <div class="hero-stat-label">Accuracy</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">0.967</div>
+                    <div class="hero-stat-label">AUC Score</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">100%</div>
+                    <div class="hero-stat-label">Explainability</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">&lt;100ms</div>
+                    <div class="hero-stat-label">Latency</div>
+                </div>
+            </div>
+            <div class="hero-buttons">
+                <a href="https://huggingface.co/spaces/Ariyan-Pro/HeartDisease-Predictor" class="btn btn-primary" target="_blank">
+                    Launch Demo
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    Explore Features
+                </a>
+                <a href="./docs" class="btn btn-secondary">
+                    View Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Bento Grid -->
+    <section class="section" id="features">
+        <div class="section-header reveal">
+            <span class="section-label">Features</span>
+            <h2 class="section-title">Enterprise-Grade Capabilities</h2>
+            <p class="section-subtitle">
+                Built with production-ready architecture for clinical deployment and research excellence
+            </p>
+        </div>
+
+        <div class="bento-grid">
+            <div class="bento-card bento-card-large reveal stagger-1">
+                <div class="bento-icon">🔬</div>
+                <h3 class="bento-title">Dual Explainability (SHAP + LIME)</h3>
+                <p class="bento-description">
+                    Every prediction generates both global and local explanations, giving clinicians 
+                    feature-level insight into risk factors driving each diagnosis. SHAP provides 
+                    model-wide interpretability while LIME delivers patient-specific reasoning.
+                </p>
+                <div class="feature-tags">
+                    <span class="feature-tag">SHAP Engine</span>
+                    <span class="feature-tag">LIME Engine</span>
+                    <span class="feature-tag">100% Coverage</span>
+                </div>
+            </div>
+
+            <div class="bento-card reveal stagger-2">
+                <div class="bento-icon">📊</div>
+                <h3 class="bento-title">Predictive Accuracy</h3>
+                <p class="bento-description">
+                    Validated performance exceeding clinical benchmarks with held-out test data.
+                </p>
+                <div class="bento-metric">
+                    <span class="bento-metric-value">94.1%</span>
+                    <span class="bento-metric-label">Accuracy</span>
+                </div>
+                <div class="bento-metric">
+                    <span class="bento-metric-value">0.967</span>
+                    <span class="bento-metric-label">ROC-AUC</span>
+                </div>
+            </div>
+
+            <div class="bento-card reveal stagger-3">
+                <div class="bento-icon">🔒</div>
+                <h3 class="bento-title">Federated Learning</h3>
+                <p class="bento-description">
+                    Train across distributed clinical sites without sharing raw patient data.
+                </p>
+                <div class="bento-metric">
+                    <span class="bento-metric-value">85.9%</span>
+                    <span class="bento-metric-label">FL Accuracy</span>
+                </div>
+                <div class="feature-tags">
+                    <span class="feature-tag">GDPR-Aligned</span>
+                    <span class="feature-tag">HIPAA-Ready</span>
+                </div>
+            </div>
+
+            <div class="bento-card bento-card-large reveal stagger-4">
+                <div class="bento-icon">⚡</div>
+                <h3 class="bento-title">Production FastAPI Backend</h3>
+                <p class="bento-description">
+                    REST API with sub-100ms inference latency, ready for EHR system integration 
+                    and clinical workflow embedding. Auto-generated Swagger documentation included.
+                </p>
+                <img src="./assets/api/swagger_documentation.png" alt="API Documentation" class="bento-image">
+                <div class="feature-tags">
+                    <span class="feature-tag">REST API</span>
+                    <span class="feature-tag">&lt;100ms Latency</span>
+                    <span class="feature-tag">Swagger Docs</span>
+                </div>
+            </div>
+
+            <div class="bento-card bento-card-tall reveal stagger-1">
+                <div class="bento-icon">📈</div>
+                <h3 class="bento-title">Enterprise MLOps via MLflow</h3>
+                <p class="bento-description">
+                    Full experiment tracking, model versioning, artifact logging, and reproducible 
+                    training pipelines. Monitor every aspect of your model lifecycle.
+                </p>
+                <img src="./assets/performance/performance_summary.png" alt="MLflow Tracking" class="bento-image">
+                <div class="feature-tags">
+                    <span class="feature-tag">Experiment Tracking</span>
+                    <span class="feature-tag">Model Versioning</span>
+                    <span class="feature-tag">Artifact Logging</span>
+                    <span class="feature-tag">Reproducibility</span>
+                </div>
+            </div>
+
+            <div class="bento-card bento-card-tall reveal stagger-2">
+                <div class="bento-icon">🖥️</div>
+                <h3 class="bento-title">Interactive Gradio Dashboard</h3>
+                <p class="bento-description">
+                    A professional, no-code UI for clinicians to input patient data and receive 
+                    annotated risk assessments in real time.
+                </p>
+                <img src="./assets/screenshots/dashboard_main.png" alt="Dashboard Interface" class="bento-image">
+                <div class="feature-tags">
+                    <span class="feature-tag">No-Code UI</span>
+                    <span class="feature-tag">Real-Time</span>
+                    <span class="feature-tag">Clinical Interface</span>
+                </div>
+            </div>
+
+            <div class="bento-card bento-card-full reveal stagger-3">
+                <div class="bento-icon">☁️</div>
+                <h3 class="bento-title">Cloud-Ready Deployment</h3>
+                <p class="bento-description">
+                    One-command deploy to Hugging Face Spaces, Streamlit Cloud, or Render — 
+                    no DevOps expertise required. Docker support included for containerized deployments.
+                </p>
+                <div class="feature-tags">
+                    <span class="feature-tag">Hugging Face Spaces</span>
+                    <span class="feature-tag">Streamlit Cloud</span>
+                    <span class="feature-tag">Render</span>
+                    <span class="feature-tag">Docker</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics -->
+    <section class="section" id="performance">
+        <div class="section-header reveal">
+            <span class="section-label">Performance</span>
+            <h2 class="section-title">Clinical-Grade Validation</h2>
+            <p class="section-subtitle">
+                Rigorously tested against industry standards with comprehensive metrics
+            </p>
+        </div>
+
+        <div class="metrics-grid reveal">
+            <div class="metric-card">
+                <div class="metric-value">94.1%</div>
+                <div class="metric-label">Accuracy</div>
+                <div class="metric-sublabel">vs 85-90% Standard</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">0.967</div>
+                <div class="metric-label">ROC-AUC Score</div>
+                <div class="metric-sublabel">vs 0.85-0.92 Standard</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">0.928</div>
+                <div class="metric-label">Precision</div>
+                <div class="metric-sublabel">vs 0.82-0.88 Standard</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">0.912</div>
+                <div class="metric-label">Recall</div>
+                <div class="metric-sublabel">vs 0.80-0.90 Standard</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">0.920</div>
+                <div class="metric-label">F1-Score</div>
+                <div class="metric-sublabel">vs 0.81-0.89 Standard</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">&lt;50ms</div>
+                <div class="metric-label">Prediction Latency</div>
+                <div class="metric-sublabel">Real-time Inference</div>
+            </div>
+        </div>
+
+        <div class="bento-grid" style="margin-top: 3rem;">
+            <div class="bento-card bento-card-large reveal">
+                <div class="bento-icon">🏥</div>
+                <h3 class="bento-title">Federated Learning Performance</h3>
+                <p class="bento-description">
+                    Multi-hospital training with privacy preservation across distributed clinical sites.
+                </p>
+                <div class="metrics-grid" style="margin-top: 1.5rem;">
+                    <div class="metric-card">
+                        <div class="metric-value">85.9%</div>
+                        <div class="metric-label">FL Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">0.941</div>
+                        <div class="metric-label">FL AUC</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Hospitals</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon">⚙️</div>
+                <h3 class="bento-title">System Reliability</h3>
+                <p class="bento-description">
+                    Production-ready infrastructure with enterprise-grade reliability targets.
+                </p>
+                <div class="metrics-grid" style="margin-top: 1.5rem;">
+                    <div class="metric-card">
+                        <div class="metric-value">99.9%</div>
+                        <div class="metric-label">Uptime Target</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">&lt;0.1%</div>
+                        <div class="metric-label">Error Rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="section" id="architecture">
+        <div class="section-header reveal">
+            <span class="section-label">Architecture</span>
+            <h2 class="section-title">Four-Layer System Design</h2>
+            <p class="section-subtitle">
+                Enterprise-grade architecture organized for scalability and maintainability
+            </p>
+        </div>
+
+        <div class="architecture-diagram reveal">
+            <div class="architecture-layers">
+                <div class="architecture-layer">
+                    <div class="layer-number">1</div>
+                    <div class="layer-content">
+                        <div class="layer-title">Interface Layer</div>
+                        <div class="layer-description">Gradio Dashboard & FastAPI REST endpoints for user interaction and external integrations</div>
+                    </div>
+                    <img src="./assets/screenshots/dashboard_main.png" alt="Interface" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px; opacity: 0.8;">
+                </div>
+                <div class="architecture-layer">
+                    <div class="layer-number">2</div>
+                    <div class="layer-content">
+                        <div class="layer-title">Explainability Layer</div>
+                        <div class="layer-description">SHAP Engine and LIME Engine for post-hoc explanation generation</div>
+                    </div>
+                    <img src="./assets/technical/shap_summary.png" alt="Explainability" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px; opacity: 0.8;">
+                </div>
+                <div class="architecture-layer">
+                    <div class="layer-number">3</div>
+                    <div class="layer-content">
+                        <div class="layer-title">ML Core Layer</div>
+                        <div class="layer-description">Trained Classifier and Federated Client for prediction and privacy-preserving training</div>
+                    </div>
+                    <img src="./assets/performance/performance_summary.png" alt="ML Core" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px; opacity: 0.8;">
+                </div>
+                <div class="architecture-layer">
+                    <div class="layer-number">4</div>
+                    <div class="layer-content">
+                        <div class="layer-title">MLOps Layer</div>
+                        <div class="layer-description">MLflow Tracking and Artifact Store for experiment management and reproducibility</div>
+                    </div>
+                    <img src="./assets/api/dashboard_running.png" alt="MLOps" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px; opacity: 0.8;">
+                </div>
+            </div>
+        </div>
+
+        <div class="bento-grid" style="margin-top: 3rem;">
+            <div class="bento-card bento-card-large reveal">
+                <div class="bento-icon">🏗️</div>
+                <h3 class="bento-title">Architecture Diagrams</h3>
+                <p class="bento-description">
+                    Comprehensive visual documentation of system architecture and error handling workflows.
+                </p>
+                <img src="./assets/architecture/four_layer_architecture.png" alt="Architecture" class="bento-image">
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon">🔄</div>
+                <h3 class="bento-title">Error Handling</h3>
+                <p class="bento-description">
+                    Production resilience with comprehensive error handling workflows.
+                </p>
+                <img src="./assets/architecture/error_handling_workflow.png" alt="Error Handling" class="bento-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Explainability Section -->
+    <section class="section" id="explainability">
+        <div class="section-header reveal">
+            <span class="section-label">Explainability</span>
+            <h2 class="section-title">Dual-Approach Interpretability</h2>
+            <p class="section-subtitle">
+                100% prediction coverage with complementary explanation strategies
+            </p>
+        </div>
+
+        <div class="bento-grid">
+            <div class="bento-card bento-card-large bento-card-tall reveal">
+                <div class="bento-icon">📊</div>
+                <h3 class="bento-title">SHAP (SHapley Additive exPlanations)</h3>
+                <p class="bento-description">
+                    Global model interpretability by attributing each feature's contribution to predictions 
+                    across the entire dataset. Clinicians can identify which biomarkers most consistently 
+                    drive risk scores.
+                </p>
+                <img src="./assets/technical/shap_summary.png" alt="SHAP Summary" class="bento-image">
+                <div class="feature-tags">
+                    <span class="feature-tag">TreeExplainer</span>
+                    <span class="feature-tag">Global Importance</span>
+                    <span class="feature-tag">Feature Attribution</span>
+                </div>
+            </div>
+
+            <div class="bento-card bento-card-tall reveal">
+                <div class="bento-icon">🎯</div>
+                <h3 class="bento-title">LIME (Local Interpretable Model-Agnostic Explanations)</h3>
+                <p class="bento-description">
+                    Generates patient-level, instance-specific explanations by approximating the model locally. 
+                    Each prediction comes with a ranked list of contributing factors for that individual.
+                </p>
+                <img src="./assets/technical/feature_importance.png" alt="LIME Analysis" class="bento-image">
+                <div class="feature-tags">
+                    <span class="feature-tag">TabularExplainer</span>
+                    <span class="feature-tag">Local Explanations</span>
+                    <span class="feature-tag">Instance-Specific</span>
+                </div>
+            </div>
+
+            <div class="bento-card bento-card-full reveal">
+                <div class="bento-icon">🔍</div>
+                <h3 class="bento-title">Clinical Validation</h3>
+                <p class="bento-description">
+                    Together, SHAP and LIME provide 100% prediction coverage with no unexplained outputs, 
+                    ensuring complete transparency for clinical decision-making.
+                </p>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">Coverage</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">&lt;200ms</div>
+                        <div class="metric-label">Explanation Time</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">&gt;92%</div>
+                        <div class="metric-label">Fidelity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section class="section" id="deployment">
+        <div class="section-header reveal">
+            <span class="section-label">Quick Start</span>
+            <h2 class="section-title">Get Started in Minutes</h2>
+            <p class="section-subtitle">
+                Simple installation and deployment for immediate use
+            </p>
+        </div>
+
+        <div class="bento-grid">
+            <div class="bento-card bento-card-full reveal">
+                <div class="bento-icon">📦</div>
+                <h3 class="bento-title">Installation</h3>
+                <div class="code-block" style="margin-top: 1.5rem;">
+<span class="code-comment"># Clone the repository</span>
+<span class="code-keyword">git clone</span> https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease.git
+<span class="code-keyword">cd</span> ExplainableAI-HeartDisease
+
+<span class="code-comment"># Install dependencies</span>
+<span class="code-keyword">pip install</span> -r requirements.txt
+
+<span class="code-comment"># Launch the dashboard</span>
+<span class="code-keyword">python</span> dashboard/app.py</div>
+                <p class="bento-description" style="margin-top: 1rem;">
+                    The Gradio interface will be available at <code style="background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px;">http://localhost:7860</code>
+                </p>
+            </div>
+
+            <div class="bento-card bento-card-large reveal">
+                <div class="bento-icon">🌐</div>
+                <h3 class="bento-title">API Server</h3>
+                <div class="code-block" style="margin-top: 1.5rem;">
+<span class="code-comment"># Start the REST API</span>
+<span class="code-keyword">uvicorn</span> healthcare_model.api:app --reload --port 8000
+
+<span class="code-comment"># API docs auto-generated at:</span>
+<span class="code-comment"># http://localhost:8000/docs</span></div>
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon">🐍</div>
+                <h3 class="bento-title">Quick Prediction</h3>
+                <div class="code-block" style="margin-top: 1.5rem; font-size: 0.75rem;">
+<span class="code-keyword">from</span> healthcare_model <span class="code-keyword">import</span> HeartDiseasePredictor
+
+predictor = HeartDiseasePredictor()
+
+patient = {
+    <span class="code-string">"age"</span>: 55,
+    <span class="code-string">"sex"</span>: 1,
+    <span class="code-string">"cp"</span>: 2,
+    <span class="code-string">"trestbps"</span>: 140,
+    <span class="code-string">"chol"</span>: 250,
+}
+
+result = predictor.predict(patient)
+<span class="code-keyword">print</span>(result[<span class="code-string">"risk_score"</span>])
+<span class="code-keyword">print</span>(result[<span class="code-string">"explanation"</span>])</div>
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon">🐳</div>
+                <h3 class="bento-title">Docker Deployment</h3>
+                <div class="code-block" style="margin-top: 1.5rem;">
+<span class="code-comment"># Build and run</span>
+<span class="code-keyword">docker build</span> -t heart-disease-ai .
+<span class="code-keyword">docker run</span> -p 7860:7860 heart-disease-ai</div>
+            </div>
+
+            <div class="bento-card bento-card-large reveal">
+                <div class="bento-icon">📊</div>
+                <h3 class="bento-title">MLflow Experiment Tracking</h3>
+                <div class="code-block" style="margin-top: 1.5rem;">
+<span class="code-comment"># View experiment results</span>
+<span class="code-keyword">mlflow ui</span> --port 5000
+
+<span class="code-comment"># Navigate to http://localhost:5000</span></div>
+                <p class="bento-description" style="margin-top: 1rem;">
+                    Track experiments, compare models, and manage artifacts through the MLflow UI.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Hub -->
+    <section class="section" id="docs">
+        <div class="section-header reveal">
+            <span class="section-label">Documentation</span>
+            <h2 class="section-title">Comprehensive Resources</h2>
+            <p class="section-subtitle">
+                Complete documentation suite for developers and researchers
+            </p>
+        </div>
+
+        <div class="bento-grid">
+            <div class="bento-card reveal">
+                <div class="bento-icon">📖</div>
+                <h3 class="bento-title">README</h3>
+                <p class="bento-description">
+                    Project overview, features, and quick start guide.
+                </p>
+                <a href="./README.md" class="btn btn-secondary" style="margin-top: 1rem; width: 100%; justify-content: center;">View README</a>
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon">🏗️</div>
+                <h3 class="bento-title">Architecture Overview</h3>
+                <p class="bento-description">
+                    System components and layer descriptions.
+                </p>
+                <a href="./docs/architecture_overview.md" class="btn btn-secondary" style="margin-top: 1rem; width: 100%; justify-content: center;">View Architecture</a>
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon">🔍</div>
+                <h3 class="bento-title">Explainability Notes</h3>
+                <p class="bento-description">
+                    SHAP and LIME implementation details.
+                </p>
+                <a href="./docs/explainability_notes.md" class="btn btn-secondary" style="margin-top: 1rem; width: 100%; justify-content: center;">View Explainability</a>
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon">📊</div>
+                <h3 class="bento-title">System Metrics</h3>
+                <p class="bento-description">
+                    Performance benchmarks and validation results.
+                </p>
+                <a href="./docs/system_metrics.md" class="btn btn-secondary" style="margin-top: 1rem; width: 100%; justify-content: center;">View Metrics</a>
+            </div>
+
+            <div class="bento-card bento-card-large reveal">
+                <div class="bento-icon">📚</div>
+                <h3 class="bento-title">Documentation Hub</h3>
+                <p class="bento-description">
+                    Complete development journey and enterprise readiness showcase with comprehensive documentation 
+                    that demonstrates capabilities suitable for top tech companies and healthcare AI divisions.
+                </p>
+                <a href="./docs/DOCUMENTATION_HUB.md" class="btn btn-secondary" style="margin-top: 1rem; width: 100%; justify-content: center;">View Documentation Hub</a>
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon">🤝</div>
+                <h3 class="bento-title">Contributing Guide</h3>
+                <p class="bento-description">
+                    How to contribute to the project.
+                </p>
+                <a href="./CONTRIBUTING.md" class="btn btn-secondary" style="margin-top: 1rem; width: 100%; justify-content: center;">View Guide</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section">
+        <div class="cta-section reveal">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Transform Clinical AI?</h2>
+                <p class="cta-subtitle">
+                    Experience the future of explainable healthcare AI. Try the live demo or explore the full source code.
+                </p>
+                <div class="hero-buttons">
+                    <a href="https://huggingface.co/spaces/Ariyan-Pro/HeartDisease-Predictor" class="btn btn-primary" target="_blank">
+                        Try Live Demo
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease" class="btn btn-secondary" target="_blank">
+                        View on GitHub
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <div class="logo-icon">🫀</div>
+                        <span>ExplainableAI</span>
+                    </a>
+                    <p>
+                        A clinical-grade AI system for heart disease prediction with complete 
+                        transparency and explainability. Built for healthcare professionals 
+                        and researchers.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="./docs">Documentation</a></li>
+                        <li><a href="./docs/architecture_overview.md">Architecture</a></li>
+                        <li><a href="./docs/system_metrics.md">Metrics</a></li>
+                        <li><a href="./CONTRIBUTING.md">Contributing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://huggingface.co/spaces/Ariyan-Pro/HeartDisease-Predictor" target="_blank">Live Demo</a></li>
+                        <li><a href="https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease" target="_blank">GitHub</a></li>
+                        <li><a href="https://archive.ics.uci.edu/ml/datasets/Heart+Disease" target="_blank">Dataset</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Acknowledgments</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/slundberg/shap" target="_blank">SHAP</a></li>
+                        <li><a href="https://github.com/marcotcr/lime" target="_blank">LIME</a></li>
+                        <li><a href="https://mlflow.org/" target="_blank">MLflow</a></li>
+                        <li><a href="https://gradio.app/" target="_blank">Gradio</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    MIT License © 2024 Ariyan Pro. Built for Clinical AI Transparency.
+                </p>
+                <div class="footer-social">
+                    <a href="https://github.com/Ariyan-Pro/ExplainableAI-HeartDisease" target="_blank" aria-label="GitHub">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                    </a>
+                    <a href="https://huggingface.co/spaces/Ariyan-Pro/HeartDisease-Predictor" target="_blank" aria-label="Hugging Face">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                            <line x1="9" y1="9" x2="9.01" y2="9"/>
+                            <line x1="15" y1="9" x2="15.01" y2="9"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 500);
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Reveal on scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
+            
+            revealElements.forEach((element) => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Initial check
+
+        // Mouse parallax effect
+        const parallaxElements = document.querySelectorAll('.bento-card, .metric-card, .architecture-layer');
+        
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            
+            parallaxElements.forEach((element, index) => {
+                const speed = (index % 3 + 1) * 5;
+                const x = mouseX * speed;
+                const y = mouseY * speed;
+                element.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for Bento Grid animations
+        const bentoCards = document.querySelectorAll('.bento-card');
+        
+        const bentoObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '-50px'
+        });
+
+        bentoCards.forEach((card) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            bentoObserver.observe(card);
+        });
+
+        // Counter animation for metrics
+        const animateCounter = (element, target, duration = 2000) => {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const updateCounter = () => {
+                start += increment;
+                if (start < target) {
+                    if (target % 1 !== 0) {
+                        element.textContent = start.toFixed(3);
+                    } else {
+                        element.textContent = Math.floor(start);
+                    }
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            };
+            
+            updateCounter();
+        };
+
+        // Trigger counter animation when metrics come into view
+        const metricValues = document.querySelectorAll('.metric-value, .hero-stat-value, .bento-metric-value');
+        
+        const metricObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && !entry.target.dataset.animated) {
+                    entry.target.dataset.animated = 'true';
+                    const text = entry.target.textContent;
+                    const match = text.match(/([\d.]+)/);
+                    if (match) {
+                        const target = parseFloat(match[1]);
+                        const suffix = text.replace(match[1], '');
+                        animateCounter(entry.target, target);
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        metricValues.forEach((value) => {
+            metricObserver.observe(value);
+        });
+    </script>
+</body>
+</html>
