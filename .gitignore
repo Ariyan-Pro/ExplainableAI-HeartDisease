@@ -1,8 +1,1 @@
-﻿
-# Python
-
-**pycache**/
-*.py[cod]
-.venv/
-.env
-models/
+Nothing should be ignored based on the provided file changes. The only added file is `index.html`, which is a source file and should not be ignored.
