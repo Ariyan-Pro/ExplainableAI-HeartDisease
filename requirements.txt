@@ -1,13 +1,33 @@
-﻿
-# requirements (placeholder)
+﻿# requirements.txt - Main Dependencies for Python 3.12
 
-xgboost
-mlflow
-optuna
-fastapi
-uvicorn
-gradio
-shap
-lime
-flower
-pydantic
+# Core ML
+numpy>=1.26.0,<2.0.0
+pandas>=2.0.0,<3.0.0
+scikit-learn>=1.3.0,<2.0.0
+scipy>=1.11.0,<2.0.0
+
+# XGBoost - Must be >=2.0 for Python 3.12
+xgboost>=2.0.0,<3.0.0
+
+# MLflow - MLOps tracking
+mlflow>=2.8.0,<3.0.0
+
+# Optuna - Hyperparameter optimization
+optuna>=3.4.0,<4.0.0
+
+# FastAPI & Uvicorn - Web server
+fastapi>=0.104.0,<1.0.0
+uvicorn>=0.24.0,<1.0.0
+
+# Gradio - UI components (install after core deps)
+gradio>=4.20.0,<5.0.0
+
+# Explainability
+shap>=0.44.0,<1.0.0
+lime>=0.2.0.1,<1.0.0
+
+# Pydantic - Data validation
+pydantic>=2.5.0,<3.0.0
+
+# Federated Learning
+flwr>=1.8.0,<2.0.0
